@@ -1,0 +1,309 @@
+{% extends "main.html" %}
+{% block title %}Personal Recording{% endblock %}
+
+
+{% block search %}
+<!-- Ke Wang, you can change the search feature here -->
+  <form id="search" action="{{ url_for('personal') }}" style="display:inline;" method="post">
+      <input id="search-box" name="searchbox" size="12" type="text" placeholder="Search Personal"/>
+      <input id="search-btn" value="Search" type="submit"/>
+  </form>
+{% endblock %}
+
+
+
+{% block content %}
+
+{% if status %}
+    <div id="alert">
+      {{ status }}
+    </div>
+{% endif %}
+
+
+<h2>Your Records</h2>
+
+    <div class="pure-g">
+      {% for audio in audio_ids %}
+        <div class="pure-u-1 pure-u-md-1-3">
+          <div class="widget">
+
+            <h2>Audio {{audio}}</h2>
+            {{audio_widget(audio)}}
+
+
+            <div class="widget_info">
+
+              <p  class="description-widget"><b>Description: </b>{{audio_info[audio]['description']}}</p>
+              
+              <!-- three buttons for personal page -->
+
+              <div class="widget_buttons">
+                <div class="toggle-button-cover">
+                     <div class="button r" id="personal_publicity_button">
+                      <input type="checkbox" class="checkbox" />
+                      <div class="knobs"></div>
+                      <div class="layer"></div>
+                    </div>
+                </div>
+  
+
+                <button class="btn button-choose pure-button" id="playButton{{audio}}">Play!</button>
+  
+                <form class="pure-form" method="post" enctype="multipart/form-data" action="{{url_for('delete_audio',audio_id=audio)}}">
+                  <button type="submit" class="btn pure-button pure-button-primary" id="delete-btn"> Delete</button>
+                </form>
+              </div>
+                
+          
+            
+            </div>
+          </div>
+
+        </div>
+        <br><br>
+
+        <script>
+     
+          var wsplayer{{audio}} = WaveSurfer.create({
+               container: "#wfcontainer{{audio}}",
+               barWidth: 3,
+               barHeight: 1, // the height of the wave
+               barGap: null,
+               waveColor: 'green',
+               progressColor: 'black',
+               scrollParent: true,
+           });
+     
+           wsplayer{{audio}}.load("{{url_for('view_audio', audio_id=audio)}}");
+           $('#playButton{{audio}}').click(function(audio){
+                 wsplayer{{audio}}.playPause();
+           });
+     
+       </script>
+
+      {% endfor %}
+    </div>
+
+
+
+ <h2>add Your own</h2> 
+
+ <form class="add-audio pure-form" method="post" enctype="multipart/form-data" action="{{url_for("upload_audio")}}">
+   <fieldset>
+       <div id="waveBlock">
+         <div id="wfcontainer">
+           <p id="preview_audio"></p>
+           
+         </div>
+         <div id="waveControlGroup">
+           <button type="button" id="backButton">Backward</button>
+           <button type="button" id="playButton">Play/Pause</button>
+           <button type="button" id="forwardButton">Forward</button>
+         </div>
+       </div>
+       <input id="select_audio" onchange="previewAudio(this)" type="file" name="audio" accept="audio/mp3" />
+       <button type="button" onclick="clearInput('select_audio')" id="clearAudio">Clear</button>
+ 
+       <div class="toggle-button-cover">
+         <!-- <div class="button-cover"> -->
+           <div class="button r" id="select_personal_publicity_button">
+             <input type="hidden" name="publicity" value="false" />
+             <input type="checkbox" name="publicity1" value="false" class="checkbox" onclick="toggle('select_personal_publicity_button')"/>
+             <div class="knobs"></div>
+             <div class="layer"></div>
+           </div>
+         <!-- </div> -->
+       </div>
+       
+ 
+       <input type="text" name="select_audio_description" id="select_audio_description" class="pure-input-1-2" placeholder="Enter audio description" />
+ 
+       <button type="submit" class="pure-button pure-button-primary">Submit</button>
+   </fieldset>
+ </form>
+ 
+ <script>
+   function toggle(button_id){
+     let cbox = document.getElementById(button_id).children[0];
+     if (cbox.value == "false") {
+       cbox.value = "true";
+     } else {
+       cbox.value = "false";
+     }
+   }
+ 
+   $("#waveBlock").hide();
+   var wavesurfer = WaveSurfer.create({
+       container: "#wfcontainer",
+       barWidth: 3,
+       barHeight: 1, // the height of the wave
+       barGap: null,
+       waveColor: 'green',
+       progressColor: 'black',
+       scrollParent: true,
+       normalize: true
+   });
+
+   function previewAudio(input){
+     var $source = input.files[0];
+     var play;
+ 
+    
+     if($source){
+         $('#preview_audio').val(wavesurfer.load(URL.createObjectURL($source)));
+ 
+     }
+     $("#waveBlock").show();
+   }
+  
+       
+   $("#playButton").click(function(){
+         wavesurfer.playPause();
+   });
+ 
+   $("#backButton").click(function(){
+         wavesurfer.skipBackward();
+   });
+   $("#forwardButton").click(function(){
+         wavesurfer.skipForward();
+   });
+ 
+   function clearInput(inputID){
+     document.getElementById(inputID).value='';
+     wavesurfer.pause();
+     $("#waveBlock").hide();
+   }
+ 
+ </script>
+ 
+ <h2>Record your own</h2>
+ 
+ <body class="record-audio">
+     <p>
+       <div id="waveBlock2">
+           <div id="wfcontainer2">
+             <p id="preview_record"></p>
+           </div>
+           <div id="waveControlGroup">
+             <button type="button" id="backButton2">Backward</button>
+             <button type="button" id="playButton2">Play/Pause</button>
+             <button type="button" id="forwardButton2">Forward</button>
+           </div>
+       </div>
+
+       <div>
+          <button id="startRecording">Start recording</button>
+          <button id="stopRecording" disabled>Stop recording</button>
+          <input type="text" id="record_audio_description" class="pure-input-1-2" placeholder="Enter your audio description" />
+
+          <div class="toggle-button-cover">
+            <!-- <div class="button-cover"> -->
+              <div class="button r" id="upload_personal_publicity_button">
+                <input type="checkbox" class="checkbox" />
+                <div class="knobs"></div>
+                <div class="layer"></div>
+              </div>
+            <!-- </div> -->
+          </div>
+          <button id="submit_record_audio" onclick=sendData()>Submit</button>
+       </div>
+
+     </p>
+ </body>
+ 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script>
+     $("#waveBlock2").hide();
+     var wavesurfer2 = WaveSurfer.create({
+       container: "#wfcontainer2",
+       barWidth: 3,
+       barHeight: 1, // the height of the wave
+       barGap: null,
+       waveColor: 'green',
+       progressColor: 'black',
+       scrollParent: true,
+       normalize: true
+     });
+ 
+     var audio = new FormData();
+  
+ 
+     navigator
+         .mediaDevices
+         .getUserMedia({audio: true})
+         .then(stream => { handlerFunction(stream) });
+ 
+     function handlerFunction(stream) {
+         rec = new MediaRecorder(stream);
+         rec.ondataavailable = e => {
+             audioChunks.push(e.data);
+             if (rec.state == "inactive") {
+                 let blob = new Blob(audioChunks, {type: 'audio/mp3'});
+                 audio.append('audio',blob,'data.mp3');
+                 // document.getElementById("audio").setAttribute('value',audio)
+                 previewRecord(blob);
+                 //sendData(blob);
+             }
+         }
+     }
+ 
+     
+ 
+     function previewRecord(f){
+      $("#waveBlock2").show();
+       if(f){
+           $('#preview_record').val(wavesurfer2.load(URL.createObjectURL(f)));
+       }
+     }
+ 
+     $("#playButton2").click(function(){
+         wavesurfer2.playPause();
+     });
+ 
+     $("#backButton2").click(function(){
+           wavesurfer2.skipBackward();
+     });
+     $("#forwardButton2").click(function(){
+           wavesurfer2.skipForward();
+     });
+ 
+     function sendData() {
+       audio.append('filename','data.mp3');
+       audio.append('select_audio_description',document.getElementById('record_audio_description').value)
+       //audio.append('person_id')
+       audio.append('publicity',document.getElementById('upload_personal_publicity_button').children[0].checked)
+ 
+         //Chrome inspector shwos that the post data includes a file and a title.
+         $.ajax({
+             type: 'POST',
+             url: '/audio',
+             data: audio,
+             cache: false,
+             processData: false,
+             contentType: false
+         }).done(function(data) {
+             console.log(data);
+             window.location.reload();
+         });
+     }
+ 
+     startRecording.onclick = e => {
+         console.log('Recording are started..');
+         startRecording.disabled = true;
+         stopRecording.disabled = false;
+         audioChunks = [];
+         rec.start();
+     };
+ 
+     stopRecording.onclick = e => {
+         console.log("Recording are stopped.");
+         startRecording.disabled = false;
+         stopRecording.disabled = true;
+         rec.stop();
+     };
+ </script>
+
+
+
+{% endblock %}

@@ -1,2 +1,2 @@
-# Audio-Blog
-A website where users can upload, record, play, and share audio blogs. link: https://imgaler.herokuapp.com/
+# project-1-snowyowl
+project-1-snowyowl created by GitHub Classroom

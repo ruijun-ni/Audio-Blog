@@ -1,0 +1,312 @@
+#emoji {
+  height: 1.5em;
+  width: 1.5em;
+}
+
+
+.description-widget {
+  height: 2em;
+  overflow:scroll;
+  overflow-x: hidden;
+  padding: 0em 0em 1em 1em;
+}
+
+.description-widget::-webkit-scrollbar {
+  width: 0.7em;
+}
+
+.description-widget::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.description-widget::-webkit-scrollbar-thumb {
+background-color: whitesmoke;
+outline: 1px solid slategrey;
+}
+
+
+.heart {
+  background-color: rgb(1, 1, 100);
+}
+
+.likes {
+  color:white;
+}
+
+
+.widget {
+  margin: 2em 2em;
+  background:beige;
+  padding: 0.1em 0em;
+  /* border: 1px solid #526066; */
+}
+
+.widget p {
+  color: whitesmoke;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.widget h2 {
+  color: rgb(1, 1, 100);
+  text-transform: none;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+/* .audio {
+  background-color: beige;
+} */
+
+
+.widget_info {
+  background-color: rgb(1, 1, 100);
+  /* padding: 0em 0em 1em 1em; */
+}
+
+
+.button-choose {
+  border: 1px solid #ccc;
+  background: #fff;
+  /* background-color: orange; */
+  color: #333;
+  border-radius: 1em;
+  font-weight: bold;
+  font-family: "Lucida Console", "Courier New", monospace;
+  position: relative;
+  text-align: center;
+}
+
+
+.main-btn {
+  text-align: center;
+  margin: auto;
+  display: flex
+}
+
+
+
+.btn {
+  display: inline-block;
+  text-align: center;
+  width: 100px;
+  height: 30px;
+}
+
+.pure-form {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+}
+
+.widget_buttons {
+  text-align: center;
+}
+
+.upload_btn {
+  font-family: "Lucida Console", "Courier New", monospace;
+  /* border: 0.5px solid grey;
+  background: whitesmoke;
+  color: #333;
+  border-radius: 0.5em;
+  position: relative;
+  text-align: center; */
+}
+
+#delete-btn {
+  border-radius: 100px;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+/* search box */
+
+#search-btn {
+    background:#074f80c7;
+    color:white;
+}
+     
+#search-box {
+    background: #eee;
+}
+
+
+
+/*
+ * -- BASE STYLES --
+ * Most of these are inherited from Base, but I want to change a few.
+ */
+ body {
+    color: #526066;
+  }
+  
+  h2,
+  h3 {
+    text-align: center;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  
+  p {
+    line-height: 1.5em;
+  }
+  
+  /*
+   * -- Layout Styles --
+   */
+  .l-content {
+    margin: 0 auto;
+  }
+  
+  .l-box {
+    padding: 0.5em 2em;
+  }
+  
+  /*
+   * -- MENU STYLES --
+   * Make the menu have a very faint box-shadow.
+   */
+  .pure-menu {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pure-menu-link {
+    padding: 0.5em 0.7em;
+  }
+  
+  /*
+   * -- BANNER --
+   * The top banner with the headings. By using a combination
+   * of `display: table;` and `display: table-cell;`, we can
+   * vertically center the text.
+   */
+  
+  .banner {
+    background: transparent
+      url("https://24.media.tumblr.com/ccb268832580ac12951828a1c179de69/tumblr_mo2xbk8JUK1st5lhmo1_1280.jpg")
+      0 0 no-repeat fixed;
+    text-align: center;
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='https://24.media.tumblr.com/ccb268832580ac12951828a1c179de69/tumblr_mo2xbk8JUK1st5lhmo1_1280.jpg', sizingMethod='scale');
+  
+    height: 100px;
+    width: 100%;
+    margin-bottom: 3em;
+    display: table;
+  }
+  
+  .banner-head {
+    display: table-cell;
+    vertical-align: middle;
+    margin-bottom: 0;
+    font-size: 2em;
+    color: white;
+    font-weight: 500;
+    text-shadow: 0 1px 1px black;
+  }
+  
+  /*
+   * -- PRICING TABLE WRAPPER --
+   * This element wraps up all the pricing table elements
+   */
+  .pricing-tables,
+  .information {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .pricing-tables {
+    margin-bottom: 3.125em;
+    text-align: center;
+  }
+  
+  /*
+   * -- PRICING TABLE  --
+   * Every pricing table has the .pricing-table class
+   */
+  .pricing-table {
+    border: 1px solid #ddd;
+    margin: 0 0.5em 2em;
+    padding: 0 0 3em;
+  }
+  
+  
+  /*
+   * -- PRICING TABLE HEADER --
+   * By default, a header is black/white, and has some styles for its <h2> name.
+   */
+  .pricing-table-header {
+    background: #111;
+    color: #fff;
+  }
+  .pricing-table-header h2 {
+    margin: 0;
+    padding-top: 2em;
+    font-size: 1em;
+    font-weight: normal;
+  }
+  
+  /*
+   * -- PRICING TABLE PRICE --
+   * Styles for the price and the corresponding <span>per month</span>
+   */
+  .pricing-table-price {
+    font-size: 6em;
+    margin: 0.2em 0 0;
+    font-weight: 100;
+  }
+  .pricing-table-price span {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.2em;
+    padding-bottom: 2em;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
+    *color: #fff;
+  }
+  
+
+  
+  
+  .information-head {
+    color: black;
+    font-weight: 500;
+  }
+  
+  
+  /*
+   * -- TABLET MEDIA QUERIES --
+   * On tablets, we want to slightly adjust the size of the banner
+   * text and add some vertical space between the various pricing tables
+   */
+  @media (min-width: 767px) {
+    .banner-head {
+      font-size: 4em;
+    }
+    .pricing-table {
+      margin-bottom: 0;
+    }
+  }
+  
+  /*
+   * -- PHONE MEDIA QUERIES --
+   * On phones, we want to reduce the height and font-size of the banner further
+   */
+  @media (min-width: 480px) {
+    .banner {
+      height: 400px;
+    }
+    .banner-head {
+      font-size: 3em;
+    }
+  }
+
+  .footer {
+    background: #ddd;
+    color: #888;
+    text-align: center;
+  }
+
+
+  .toggle-button-cover {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+  }

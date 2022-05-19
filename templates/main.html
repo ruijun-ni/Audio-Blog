@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" integrity="sha384-LTIDeidl25h2dPxrB2Ekgc9c7sEC3CWGM6HeFmuDNUjX76Ert4Z4IY714dhZHPLd" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/grids-responsive-min.css" />
+  
+  <link rel="stylesheet" href="./static/main.css">
+  <link rel="stylesheet" href="./static/audio.css">
+
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/wavesurfer.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  
+  <title> {% block title %}{% endblock %} Audio Blogs </title>
+</head>
+
+<body>
+ 
+      <div class="pure-menu pure-menu-horizontal">
+        <a href="{{url_for('home')}}" class="pure-menu-heading">  <img id="emoji" src="https://emoji.slack-edge.com/T02SZRZBNF9/snowyowl/1646b86aeb7d5f92.jpg"></a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="{{url_for('home')}}" class="pure-menu-link">Home</a></li>
+            <li class="pure-menu-item"><a href="{{url_for('personal')}}" class="pure-menu-link">Account</a></li>
+            {% if session['profile'] %}
+            <li class="pure-menu-item"><a href="{{ url_for('logout') }}" class="pure-menu-link">Logout {{ session['profile']['name'] }} </a></li>
+            {% else %}
+            <li class="pure-menu-item"><a href="{{ url_for('login') }}" class="pure-menu-link">Login</a></li>
+            {% endif %}
+            <!-- login needs changing -->
+            
+            <li class="pure-menu-item">
+                {% block search %}
+                  <form id="search" action="{{ url_for('home') }}" style="display:inline;" method="post">
+                      <input id="search-box" name="searchbox" size="12" type="text" placeholder="  Type! :D "/>
+                      <input id="search-btn" value="Search" type="submit"/>
+                  </form>
+                {% endblock %}
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="banner">
+        <h1 class="banner-head">
+            Audio Blog. <br>
+            Let's Share Your Story!
+        </h1>
+    </div>
+
+
+{% macro audio_widget(data) -%}
+    <div class="audio" id="wfcontainer{{data}}" class="widget"></div>
+{%- endmacro %}
+
+
+
+
+{% block content %}
+
+    {% if status %}
+        <div id="alert">
+        {{ status }}
+        </div>
+    {% endif %}
+
+
+    <div class="pure-g">
+        {% for audio in audio_ids %}
+            <div class="pure-u-1 pure-u-md-1-3">
+                <div class="widget">
+
+                <h2>Audio {{audio}}</h2>
+
+                {{audio_widget(audio)}}
+                    
+                <div class="widget_info">
+
+                    <p class="description-widget"><b>Description: </b>{{audio_info[audio]['description']}}</p>
+                
+                    <button class="main-btn button-choose pure-button" id="playButton{{audio}}">Play!</button>
+                    <br>
+                </div>
+
+
+                </div>
+            </div>
+            <br><br>
+
+            <script>
+     
+                var wsplayer{{audio}} = WaveSurfer.create({
+                     container: "#wfcontainer{{audio}}",
+                     barWidth: 3,
+                     barHeight: 1, // the height of the wave
+                     barGap: null,
+                     waveColor: 'green',
+                     progressColor: 'black',
+                     scrollParent: true,
+                 });
+           
+                 wsplayer{{audio}}.load("{{url_for('view_audio', audio_id=audio)}}");
+                 $('#playButton{{audio}}').click(function(audio){
+                       wsplayer{{audio}}.playPause();
+                 });
+           
+             </script>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+<div class="footer l-box">
+    <p>
+        @SnowyOwl &#128149;
+    </p>
+</div>
+
+</body>
+</html>
